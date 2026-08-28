@@ -1,0 +1,196 @@
+{
+  "profiles": {
+    "orders": {
+      "file": "orders.csv",
+      "role": "Event Header",
+      "rows": 21350,
+      "columns": 3,
+      "column_names": [
+        "order_id",
+        "date",
+        "time"
+      ],
+      "size_kb": 552.1,
+      "candidate_primary_keys": [
+        "order_id"
+      ],
+      "constant_columns": [],
+      "missing_expected_columns": [],
+      "null_counts": {
+        "order_id": 0,
+        "date": 0,
+        "time": 0
+      },
+      "distinct_counts": {
+        "order_id": 21350,
+        "date": 358,
+        "time": 16382
+      }
+    },
+    "order_details": {
+      "file": "order_details.csv",
+      "role": "Event Detail",
+      "rows": 52050,
+      "columns": 4,
+      "column_names": [
+        "order_details_id",
+        "order_id",
+        "pizza_id",
+        "quantity"
+      ],
+      "size_kb": 1369.2,
+      "candidate_primary_keys": [
+        "order_details_id"
+      ],
+      "constant_columns": [],
+      "missing_expected_columns": [],
+      "null_counts": {
+        "order_details_id": 0,
+        "order_id": 0,
+        "pizza_id": 0,
+        "quantity": 0
+      },
+      "distinct_counts": {
+        "order_details_id": 52050,
+        "order_id": 21350,
+        "pizza_id": 96,
+        "quantity": 4
+      }
+    },
+    "pizzas": {
+      "file": "pizzas.csv",
+      "role": "Entity",
+      "rows": 96,
+      "columns": 4,
+      "column_names": [
+        "pizza_id",
+        "pizza_type_id",
+        "size",
+        "price"
+      ],
+      "size_kb": 3.0,
+      "candidate_primary_keys": [
+        "pizza_id"
+      ],
+      "constant_columns": [],
+      "missing_expected_columns": [],
+      "null_counts": {
+        "pizza_id": 0,
+        "pizza_type_id": 0,
+        "size": 0,
+        "price": 0
+      },
+      "distinct_counts": {
+        "pizza_id": 96,
+        "pizza_type_id": 32,
+        "size": 5,
+        "price": 27
+      }
+    },
+    "pizza_types": {
+      "file": "pizza_types.csv",
+      "role": "Entity",
+      "rows": 32,
+      "columns": 4,
+      "column_names": [
+        "pizza_type_id",
+        "name",
+        "category",
+        "ingredients"
+      ],
+      "size_kb": 3.7,
+      "candidate_primary_keys": [
+        "pizza_type_id",
+        "name",
+        "ingredients"
+      ],
+      "constant_columns": [],
+      "missing_expected_columns": [],
+      "null_counts": {
+        "pizza_type_id": 0,
+        "name": 0,
+        "category": 0,
+        "ingredients": 0
+      },
+      "distinct_counts": {
+        "pizza_type_id": 32,
+        "name": 32,
+        "category": 4,
+        "ingredients": 32
+      }
+    }
+  },
+  "integrity": {
+    "foreign_keys_resolve": {
+      "orders.order_id unique": true,
+      "order_details.order_details_id unique": true,
+      "order_details.order_id -> orders.order_id": true,
+      "order_details.pizza_id -> pizzas.pizza_id": true,
+      "pizzas.pizza_type_id -> pizza_types.pizza_type_id": true
+    },
+    "orphan_counts": {
+      "order_details_without_order": 0,
+      "order_details_without_pizza": 0,
+      "pizzas_without_type": 0
+    }
+  },
+  "relationships": {
+    "orders_to_order_details": {
+      "relationship": "orders 1..* order_details",
+      "met": true,
+      "children_min": 1,
+      "children_median": 2.0,
+      "children_max": 22
+    },
+    "pizza_types_to_pizzas": {
+      "relationship": "pizza_types 1..* pizzas",
+      "met": true,
+      "children_min": 1,
+      "children_median": 3.0,
+      "children_max": 5
+    },
+    "pizza_types_to_categories": {
+      "distinct_categories": 4,
+      "categories": [
+        "Chicken",
+        "Classic",
+        "Supreme",
+        "Veggie"
+      ]
+    },
+    "orders": {
+      "rows": 21350,
+      "distinct_order_ids": 21350
+    }
+  },
+  "eligibility": {
+    "condition_1_related_tables": {
+      "met": true,
+      "tables": [
+        "orders",
+        "order_details",
+        "pizzas",
+        "pizza_types"
+      ]
+    },
+    "condition_2_one_to_many": {
+      "met": true,
+      "associations": [
+        "orders 1..* order_details",
+        "pizza_types 1..* pizzas"
+      ]
+    },
+    "condition_3_timestamp": {
+      "met": true,
+      "field": "orders.date + orders.time",
+      "min": "2015-01-01 11:38:36",
+      "max": "2015-12-31 23:02:05"
+    },
+    "condition_4_volume": {
+      "met": true,
+      "event_rows": 52050,
+      "required_rows": 50000,
+      "note": "Event-row threshold met."
+    }
+  }
+}

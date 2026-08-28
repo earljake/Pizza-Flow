@@ -1,0 +1,32 @@
+{
+  "project": "PizzaFlow",
+  "join": {
+    "rows_before": 52050,
+    "rows_after": 52050,
+    "delta": 0,
+    "input_partitions": 1,
+    "broadcast_hash_joins": 6,
+    "sort_merge_joins": 0
+  },
+  "aggregation": {
+    "partition_key": "category",
+    "partitions": 4,
+    "groups": 4,
+    "seconds": 0.6236
+  },
+  "validation": {
+    "parallel_groups": 4,
+    "baseline_groups": 4,
+    "group_count_match": true,
+    "partition_keys_match": true,
+    "max_differences": {
+      "order_count": 0.0,
+      "item_line_count": 0.0,
+      "units_sold": 0.0,
+      "revenue_total": 3.4051481634378433e-09,
+      "revenue_mean": 2.7355895326763857e-13
+    },
+    "tolerance": 1e-06,
+    "passed": true
+  }
+}
